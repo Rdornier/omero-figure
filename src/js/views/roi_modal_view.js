@@ -73,6 +73,7 @@ var RoiModalView = Backbone.View.extend({
                 var shapesJson = self.m.get('shapes');
                 if (shapesJson) {
                     self.shapeManager.setShapesJson(shapesJson);
+                    self.reorderShapes(shapesJson)
                 }
 
                 // Default line width
@@ -112,6 +113,44 @@ var RoiModalView = Backbone.View.extend({
             "click .roisJumpPage": "roisJumpPage",
             "click .revert_theZ": "revertTheZ",
             "click .revert_theT": "revertTheT",
+        },
+
+        reorderShapes: function(shapesJson){
+            for(let i = 0; i <shapesJson.length; i++){
+                var roi = shapesJson[i];
+                if(roi.type === "Rectangle"){
+                    roi.area = roi.height * roi.width
+                }
+                else if(roi.type === "Arrow"){
+                    roi.area = 0
+                }
+                else if(roi.type === "Line"){
+                    roi.area = 0
+                }
+                else if(roi.type === "Ellipse"){
+                    roi.area = roi.radiusX * roi.radiusY * 3.1415
+                }
+                else if(roi.type === "Polyline" || roi.type === "Polygon"){
+                    var points = roi.points.split(" ")
+                    var xArray = []
+                    var yArray = []
+                    points.forEach(function(pt){
+                        var coords = pt.split(",")
+                        xArray.push(parseFloat(coords[0]))
+                        yArray.push(parseFloat(coords[1]))
+                    })
+
+                    var height = Math.max.apply(Math, xArray) - Math.min.apply(Math, xArray)
+                    var width = Math.max.apply(Math, yArray) - Math.min.apply(Math, yArray)
+                    roi.area = height * width
+                }else{
+                    roi.area = 1000000000
+                }
+            }
+
+            shapesJson.sort(function(a, b){
+                return a.area - b.area;
+            }).reverse();
         },
 
         revertTheZ: function() {
