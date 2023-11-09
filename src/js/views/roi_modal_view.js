@@ -72,8 +72,8 @@ var RoiModalView = Backbone.View.extend({
                 // Load any existing shapes on panel
                 var shapesJson = self.m.get('shapes');
                 if (shapesJson) {
-                    self.shapeManager.setShapesJson(shapesJson);
                     self.reorderShapes(shapesJson)
+                    self.shapeManager.setShapesJson(shapesJson);
                 }
 
                 // Default line width
