@@ -520,8 +520,14 @@
                     <h4>Markdown formatting</h4>
                     <p>
                         You can use "Markdown" syntax to add formatting to plain text. For example,
-                        **this text will be bold** and this *word* will be italic. NB: Links are not
-                        supported for panel labels.
+                        **this text will be bold** and this *word* will be italic. 
+                    </p>
+                    <p>
+                        NB: Links are not supported for panel labels.
+                    </p>
+                    <p>
+                        NB: You can escape a certain character to not be interpreted as Markdown by adding \ in front of the 
+                        character. Ex: "my_string_" is interpreted as "my<i>string</i>" but "my\_string\_" is now interpreted as "my_string_"
                     </p>
 
                     <table class="table">
@@ -531,21 +537,21 @@
                             <th>...this text</th></tr>
                         <tr>
                             <th>BOLD</th>
-                            <td>Use 2 stars for **bold**.</td>
-                            <td>Use 2 stars for <strong>bold</strong>.</td>
+                            <td>**bold** or __bold__</td>
+                            <td><strong>bold</strong> or <strong>bold</strong></td>
                         </tr>
                         <tr>
                             <th>ITALIC</th>
-                            <td>Use 1 star for *italic*.</td>
-                            <td>Use 1 star for <i>italic</i>.</td>
+                            <td>*italic* or _italic_</td>
+                            <td><i>italic</i> or <i>italic</i></td>
                         </tr>
                         <tr>
                             <th>LINKS</th>
-                            <td>Add links with [Link text](http://link_url.com)</td>
-                            <td>Add links with <a href="#">Link text</a></td>
+                            <td>[Link text](http://link_url.com)</td>
+                            <td><a href="#">Link text</a></td>
                         </tr>
                        <!--  <tr><td>You need to use 2 line breaks between paragraphs</td><td></td></tr> -->
-                    </table>
+                    </table>                    
                     <h4>Dynamic properties</h4>
                     <p>
                         The drop-down menu in the 'Add Labels' form allows you to create labels based on Image metadata. 
@@ -596,6 +602,16 @@
                             <td>Time: -0.06 s</td>
                         </tr>
                         <tr>
+                            <th>Z index with units <br/> (first plane is Z: 0.00 &#181;m), <br/>offset by 3 times the Z pixel size</th>
+                            <td>Z: [z.unit; offset=3]</td>
+                            <td>Z: -3.00 &#181;m </td>
+                        </tr>
+                        <tr>
+                            <th>Z index (first plane is Z: 1) <br/>offset by 3</th>
+                            <td>Z: [z.pixel; offset=3]</td>
+                            <td>Z: -2 </td>
+                        </tr>
+                        <tr>
                             <th>Image ID</th>
                             <td>Image ID: [image.id]</td>
                             <td>Image ID: 23556</td>
@@ -604,6 +620,11 @@
                             <th>Dataset ID</th>
                             <td>Dataset ID: [dataset.id]</td>
                             <td>Dataset ID: 1654</td>
+                        </tr>
+                        <tr>
+                            <th>Zoom</th>
+                            <td>[zoom]</td>
+                            <td>100 %</td>
                         </tr>
                     </table>
                     <h4>Legend</h4>
@@ -698,8 +719,14 @@
                 </div>
                 <form class="labelsFromMapAnnsForm" role="form">
                     <div class="modal-body">
-                        <p>Choose Key
-                            <small class="text-muted">(shows numbers of images)</small>:</p>
+                        <div>                                                    
+                            <input type="radio" id="all-keys" name="kvpChoice" value="all-keys" />
+                            <label for="all-keys">All Keys </label>
+              
+                            <input type="radio" id="single-key" name="kvpChoice" value="single-key" checked />
+                            <label for="single-key">Choose Key <small class="text-muted">(shows numbers of images)</small>:</label>
+                        </div>
+                    
                         <select>
                         </select>
                         <div class="checkbox">
