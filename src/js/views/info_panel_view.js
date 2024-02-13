@@ -23,6 +23,7 @@ var InfoPanelView = Backbone.View.extend({
     events: {
         "click .setId": "setImageId",
         "click .set_dpi": "set_dpi",
+        "click .set_size": "set_size",
         "click .clear_dpi": "clear_dpi",
         "blur .xywh_form input": "handle_xywh",
         "keyup .xywh_form input": "handle_xywh",
@@ -117,6 +118,30 @@ var InfoPanelView = Backbone.View.extend({
     set_dpi: function(event) {
         event.preventDefault();
         $("#dpiModal").modal('show');
+    },
+
+    set_size: function(event){
+        event.preventDefault();
+               
+        if(this.models.length > 1){
+            var m = this.models["models"][0];
+            var refWidth = m.get("width");
+            var refOrigWidth = m.get("orig_width");
+            var refPixelSize = m.get("pixel_size_x")
+
+            this.models.forEach(function(m) {
+                var oldWidth = m.get("width");
+                var oldHeight = m.get("height");
+                var origWidth = m.get("orig_width");
+                var pixelSize = m.get("pixel_size_x")
+                var aspectRatio = oldWidth/oldHeight;
+                var newDimensions = {};
+                var newWidth = (pixelSize*origWidth*refWidth)/(refPixelSize*refOrigWidth);
+                newDimensions["width"] = newWidth;
+                newDimensions["height"] = newWidth/aspectRatio;
+                m.save(newDimensions);
+            }.bind(this));
+        }
     },
 
     // remove optional min_export_dpi attribute from selected panels
